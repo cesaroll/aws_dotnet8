@@ -1,6 +1,7 @@
-using Domain.Persistance;
-using Persistance.PostgreSql;
+using MediatR;
 using Persistance.PostgreSql.Config;
+using App.Customers.Queries;
+using App;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,8 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// builder.Services.Configure<PgSettings>(builder.Configuration.GetSection("ConnectionStrings"));
 builder.Services.AddPostgresql(builder.Configuration.GetConnectionString("CustomersPg")!);
+
+builder.Services.AddApp();
+
+builder.Services.AddApp();
 
 var app = builder.Build();
 
@@ -23,34 +27,19 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/api/customers", async (IRepository repository) => {
-    var customers = await repository.GetCustomersAsync();
+app.MapGet("/api/customers", async (IMediator mediator) => {
+    var customers = await mediator.Send(GetAllCustomersQuery.Instance);
     return customers;
-});
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
 })
-.WithName("GetWeatherForecast")
+.WithName("GetCustomers")
+.WithOpenApi();
+
+app.MapGet("/api/customers/{id}", async (Guid id, IMediator mediator) => {
+    var query = new GetByIdCustomerQuery(id);
+    var customers = await mediator.Send(GetAllCustomersQuery.Instance);
+    return customers;
+})
+.WithName("GetCustomerById")
 .WithOpenApi();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

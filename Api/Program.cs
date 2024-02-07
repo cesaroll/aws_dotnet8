@@ -3,6 +3,7 @@ using Persistance.PostgreSql.Config;
 using App.Customers.Queries;
 using App;
 using Domain.Models;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,9 @@ builder.Services.AddPostgresql(builder.Configuration.GetConnectionString("Custom
 
 builder.Services.AddApp();
 
-builder.Services.AddApp();
+builder.Host.UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration
+    .ReadFrom.Configuration(hostingContext.Configuration)
+    .Enrich.FromLogContext());
 
 var app = builder.Build();
 

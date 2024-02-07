@@ -7,10 +7,10 @@ using MediatR;
 
 namespace App;
 
-public record GetByIdCustomerQuery : IRequest<Customer>
+public record CustomerQuery : IRequest<Customer>
 {
     public Guid Id { get; set; }
-    public GetByIdCustomerQuery(Guid id)
+    public CustomerQuery(Guid id)
     {
         Id = id;
     }

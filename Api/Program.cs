@@ -29,31 +29,31 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapGet("/api/customer", async (IMediator mediator, CancellationToken ct) =>
-    await mediator.Send(GetAllCustomersQuery.Instance, ct))
+    await mediator.Send(CustomersQuery.Instance, ct))
 .WithName("GetCustomers")
 .WithOpenApi();
 
 app.MapGet("/api/customer/{id}", async (Guid id, IMediator mediator, CancellationToken ct) =>
-    await mediator.Send(new GetByIdCustomerQuery(id), ct))
+    await mediator.Send(new CustomerQuery(id), ct))
 .WithName("GetCustomerById")
 .WithOpenApi();
 
 app.MapPost("/api/customer", async (IMediator mediator, Customer customer, CancellationToken ct) =>
-    await mediator.Send(new CreateCustomerCommand{
+    await mediator.Send(new CustomerCreateCommand{
         NewCustomer = customer
     }, ct))
 .WithName("CreateCustomer")
 .WithOpenApi();
 
 app.MapPut("/api/customer", async (IMediator mediator, Customer customer, CancellationToken ct) =>
-    await mediator.Send(new UpdateCustomerCommand{
+    await mediator.Send(new CustomerUpdateCommand{
         UpdatedCustomer = customer
     }, ct))
 .WithName("UpdateCustomer")
 .WithOpenApi();
 
 app.MapDelete("/api/customer/{id}", async (Guid id, IMediator mediator, CancellationToken ct) =>
-    await mediator.Send(new DeleteCustomerCommand{
+    await mediator.Send(new CustomerDeleteCommand{
         Id = id
     }, ct))
 .WithName("DeleteCustomer")

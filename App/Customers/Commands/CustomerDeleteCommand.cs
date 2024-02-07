@@ -6,7 +6,7 @@ using MediatR;
 
 namespace App;
 
-public record class DeleteCustomerCommand : IRequest
+public record class CustomerDeleteCommand : IRequest
 {
     public Guid Id { get; init; }
 }

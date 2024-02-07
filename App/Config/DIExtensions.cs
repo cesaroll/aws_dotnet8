@@ -13,7 +13,7 @@ public static class DIExtensions
     public static IServiceCollection AddApp(this IServiceCollection services)
     {
         services.AddMediatR(cfg => {
-            cfg.RegisterServicesFromAssemblyContaining<GetAllCustomersQuery>();
+            cfg.RegisterServicesFromAssemblyContaining<CustomersQuery>();
         });
         return services;
     }

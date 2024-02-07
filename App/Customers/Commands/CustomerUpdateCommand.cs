@@ -7,7 +7,7 @@ using MediatR;
 
 namespace App;
 
-public record class UpdateCustomerCommand : IRequest<Customer>
+public record class CustomerUpdateCommand : IRequest<Customer>
 {
     public Customer UpdatedCustomer { get; init; }
 }

@@ -33,6 +33,7 @@ public class Repository : IRepository
     public async Task<Customer> AddCustomerAsync(Customer customer, CancellationToken cancellationToken = default)
     {
         var entity = await _dbContext.Customers.AddAsync(customer.ToCustomerEntity(), cancellationToken);
+        await _dbContext.SaveChangesAsync();
         return entity.Entity.ToCustomer();
     }
 
@@ -46,9 +47,10 @@ public class Repository : IRepository
         customerEntity.FullName = customer.FullName;
         customerEntity.Email = customer.Email;
         customerEntity.GitHubUsername = customer.GitHubUsername;
-        customerEntity.DateOfBirth = customer.DateOfBirth;
+        customerEntity.DateOfBirth = customer.DateOfBirth.ToUniversalTime();
 
         _dbContext.Customers.Update(customerEntity);
+        await _dbContext.SaveChangesAsync();
 
         return customer;
     }
@@ -61,5 +63,6 @@ public class Repository : IRepository
             return;
 
         _dbContext.Customers.Remove(customer);
+        await _dbContext.SaveChangesAsync();
     }
 }

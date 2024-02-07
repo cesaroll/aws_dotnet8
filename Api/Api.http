@@ -1,6 +1,6 @@
 @Api_HostAddress = http://localhost:5028
 
-GET {{Api_HostAddress}}/api/customers
+GET {{Api_HostAddress}}/api/customer
 Accept: application/json
 
 ###

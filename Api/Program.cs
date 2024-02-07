@@ -2,6 +2,7 @@ using MediatR;
 using Persistance.PostgreSql.Config;
 using App.Customers.Queries;
 using App;
+using Domain.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,19 +28,35 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/api/customers", async (IMediator mediator) => {
-    var customers = await mediator.Send(GetAllCustomersQuery.Instance);
-    return customers;
-})
+app.MapGet("/api/customer", async (IMediator mediator, CancellationToken ct) =>
+    await mediator.Send(GetAllCustomersQuery.Instance, ct))
 .WithName("GetCustomers")
 .WithOpenApi();
 
-app.MapGet("/api/customers/{id}", async (Guid id, IMediator mediator) => {
-    var query = new GetByIdCustomerQuery(id);
-    var customers = await mediator.Send(GetAllCustomersQuery.Instance);
-    return customers;
-})
+app.MapGet("/api/customer/{id}", async (Guid id, IMediator mediator, CancellationToken ct) =>
+    await mediator.Send(new GetByIdCustomerQuery(id), ct))
 .WithName("GetCustomerById")
+.WithOpenApi();
+
+app.MapPost("/api/customer", async (IMediator mediator, Customer customer, CancellationToken ct) =>
+    await mediator.Send(new CreateCustomerCommand{
+        NewCustomer = customer
+    }, ct))
+.WithName("CreateCustomer")
+.WithOpenApi();
+
+app.MapPut("/api/customer", async (IMediator mediator, Customer customer, CancellationToken ct) =>
+    await mediator.Send(new UpdateCustomerCommand{
+        UpdatedCustomer = customer
+    }, ct))
+.WithName("UpdateCustomer")
+.WithOpenApi();
+
+app.MapDelete("/api/customer/{id}", async (Guid id, IMediator mediator, CancellationToken ct) =>
+    await mediator.Send(new DeleteCustomerCommand{
+        Id = id
+    }, ct))
+.WithName("DeleteCustomer")
 .WithOpenApi();
 
 app.Run();

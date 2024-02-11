@@ -24,7 +24,7 @@ public class Repository : IRepository
         return customer?.ToCustomer();
     }
 
-    public async Task<IList<Customer>> GetCustomersAsync(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Customer>> GetCustomersAsync(CancellationToken cancellationToken = default)
     {
         var customerEntities = await _dbContext.Customers.ToListAsync(cancellationToken);
         return customerEntities.ToCustomers();

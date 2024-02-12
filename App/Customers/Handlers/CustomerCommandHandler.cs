@@ -15,20 +15,34 @@ public class CustomerCommandHandler :
     IRequestHandler<CustomerDeleteCommand>
 {
     private readonly IRepository _repository;
+    private readonly IMessenger _messenger;
     private readonly ILogger<CustomerCommandHandler> _logger;
 
-    public CustomerCommandHandler(IRepository repository, ILogger<CustomerCommandHandler> logger)
+    public CustomerCommandHandler(IRepository repository, ILogger<CustomerCommandHandler> logger, IMessenger messenger)
     {
         _repository = repository;
         _logger = logger;
+        _messenger = messenger;
     }
 
-    public async Task<Customer> Handle(CustomerCreateCommand request, CancellationToken cancellationToken) =>
-        await _repository.AddCustomerAsync(request.NewCustomer, cancellationToken);
+    public async Task<Customer> Handle(CustomerCreateCommand request, CancellationToken cancellationToken)
+    {
+        var customer = await _repository.AddCustomerAsync(request.NewCustomer, cancellationToken);
+        await _messenger.SendMessageAsync(customer, "Create", cancellationToken);
+        return customer;
+    }
 
-    public Task<Customer> Handle(CustomerUpdateCommand request, CancellationToken cancellationToken) =>
-        _repository.UpdateCustomerAsync(request.UpdatedCustomer, cancellationToken);
+    public async Task<Customer> Handle(CustomerUpdateCommand request, CancellationToken cancellationToken)
+    {
+        var customer = await _repository.UpdateCustomerAsync(request.UpdatedCustomer, cancellationToken);
+        await _messenger.SendMessageAsync(customer, "Update", cancellationToken);
+        return customer;
+    }
 
-    public Task Handle(CustomerDeleteCommand request, CancellationToken cancellationToken) =>
-        _repository.DeleteCustomerAsync(request.Id, cancellationToken);
+
+    public async Task Handle(CustomerDeleteCommand request, CancellationToken cancellationToken)
+    {
+        await _repository.DeleteCustomerAsync(request.Id, cancellationToken);
+        await _messenger.SendMessageAsync(request.Id, "Delete", cancellationToken);
+    }
 }

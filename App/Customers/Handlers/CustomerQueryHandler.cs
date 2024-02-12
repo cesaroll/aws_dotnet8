@@ -26,8 +26,6 @@ public class CustomerQueryHandler :
     public async Task<Customer?> Handle(CustomerQuery request, CancellationToken cancellationToken) =>
         await _repository.GetCustomerAsync(request.Id, cancellationToken);
 
-    public async Task<IEnumerable<Customer>> Handle(CustomersQuery request, CancellationToken cancellationToken)
-    {
-        return await _repository.GetCustomersAsync(cancellationToken);
-    }
+    public async Task<IEnumerable<Customer>> Handle(CustomersQuery request, CancellationToken cancellationToken) =>
+        await _repository.GetCustomersAsync(cancellationToken);
 }

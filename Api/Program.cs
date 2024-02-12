@@ -5,6 +5,7 @@ using App;
 using Domain.Models;
 using Serilog;
 using Api.Middleware;
+using Messenger.SQS.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddPostgresql(builder.Configuration.GetConnectionString("CustomersPg")!);
+
+builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("Queue"));
+builder.Services.AddSqsMessenger();
 
 builder.Services.AddApp();
 

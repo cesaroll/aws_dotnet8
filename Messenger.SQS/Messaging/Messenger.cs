@@ -27,7 +27,7 @@ public class Messenger : IMessenger
         _logger = logger;
     }
 
-    public async Task SendMessageAsync<T>(T message, string command, CancellationToken cancellationToken = default)
+    public async Task SendMessageAsync<T>(T message, CancellationToken cancellationToken = default)
     {
         var queueUrl = await GetQueueUrlAsync(cancellationToken);
 
@@ -43,14 +43,6 @@ public class Messenger : IMessenger
                     {
                         DataType = "String",
                         StringValue = typeof(T).Name
-                    }
-                },
-                {
-                    "MessageCommand",
-                    new MessageAttributeValue
-                    {
-                        DataType = "String",
-                        StringValue = command
                     }
                 }
             }

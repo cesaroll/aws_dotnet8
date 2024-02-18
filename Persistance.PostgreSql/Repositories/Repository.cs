@@ -18,23 +18,11 @@ public class Repository : IRepository
         _dbContext = dbContext;
     }
 
-    public async Task<Customer?> GetCustomerAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        var customer = await _dbContext.Customers.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
-        return customer?.ToCustomer();
-    }
-
-    public async Task<IEnumerable<Customer>> GetCustomersAsync(CancellationToken cancellationToken = default)
-    {
-        var customerEntities = await _dbContext.Customers.ToListAsync(cancellationToken);
-        return customerEntities.ToCustomers();
-    }
-
     public async Task<Customer> AddCustomerAsync(Customer customer, CancellationToken cancellationToken = default)
     {
-        var entity = await _dbContext.Customers.AddAsync(customer.ToCustomerEntity(), cancellationToken);
+        var customerEntity = await _dbContext.Customers.AddAsync(customer.ToCustomerEntity(), cancellationToken);
         await _dbContext.SaveChangesAsync();
-        return entity.Entity.ToCustomer();
+        return customerEntity.Entity.ToCustomer();
     }
 
     public async Task<Customer> UpdateCustomerAsync(Customer customer, CancellationToken cancellationToken = default)
@@ -52,17 +40,19 @@ public class Repository : IRepository
         _dbContext.Customers.Update(customerEntity);
         await _dbContext.SaveChangesAsync();
 
-        return customer;
+        return customerEntity.ToCustomer();
     }
 
-    public async Task DeleteCustomerAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Customer?> DeleteCustomerAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var customer = await _dbContext.Customers.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        var customerEntity = await _dbContext.Customers.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-        if (customer == null)
-            return;
+        if (customerEntity == null)
+            return null;
 
-        _dbContext.Customers.Remove(customer);
+        _dbContext.Customers.Remove(customerEntity);
         await _dbContext.SaveChangesAsync();
+
+        return customerEntity.ToCustomer();
     }
 }

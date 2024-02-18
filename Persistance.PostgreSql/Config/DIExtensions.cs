@@ -20,6 +20,7 @@ public static class DIExtensions
         services.AddScoped<IDbContext>(provider => provider.GetRequiredService<Context>());
 
         services.AddScoped<IRepository, Repository>();
+        services.AddScoped<IQueryRepository, QueryRepository>();
 
         return services;
     }

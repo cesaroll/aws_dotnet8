@@ -2,10 +2,11 @@ using MediatR;
 using Persistance.PostgreSql.Config;
 using App.Customers.Queries;
 using App;
-using Domain.Models;
 using Serilog;
 using Api.Middleware;
 using Messenger.SQS.Config;
+using Api.Dtos;
+using Api.Mappers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,16 +51,16 @@ app.MapGet("/api/customer/{id}", async (Guid id, IMediator mediator, Cancellatio
 .WithName("GetCustomerById")
 .WithOpenApi();
 
-app.MapPost("/api/customer", async (IMediator mediator, Customer customer, CancellationToken ct) =>
+app.MapPost("/api/customer", async (IMediator mediator, CreateCustomerDto createCustomerDto, CancellationToken ct) =>
     await mediator.Send(new CustomerCreateCommand{
-        NewCustomer = customer
+        NewCustomer = createCustomerDto.ToCustomer()
     }, ct))
 .WithName("CreateCustomer")
 .WithOpenApi();
 
-app.MapPut("/api/customer", async (IMediator mediator, Customer customer, CancellationToken ct) =>
+app.MapPut("/api/customer/{id}", async (IMediator mediator, Guid id, UpdateCustomerDto updateCustomerDto, CancellationToken ct) =>
     await mediator.Send(new CustomerUpdateCommand{
-        UpdatedCustomer = customer
+        UpdatedCustomer = updateCustomerDto.ToCustomer(id)
     }, ct))
 .WithName("UpdateCustomer")
 .WithOpenApi();

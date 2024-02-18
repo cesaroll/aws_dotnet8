@@ -3,6 +3,7 @@
  * @copyright 2024 - All rights reserved
  */
 using Domain.Models;
+using Domain.Models.EventModels;
 using Domain.Persistance;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -28,21 +29,32 @@ public class CustomerCommandHandler :
     public async Task<Customer> Handle(CustomerCreateCommand request, CancellationToken cancellationToken)
     {
         var customer = await _repository.AddCustomerAsync(request.NewCustomer, cancellationToken);
-        await _messenger.SendMessageAsync(customer, "Create", cancellationToken);
+        await _messenger.SendMessageAsync(new CustomerCreated{
+            PublishedAt = DateTime.UtcNow,
+            Customer = customer
+        }, cancellationToken);
         return customer;
     }
 
     public async Task<Customer> Handle(CustomerUpdateCommand request, CancellationToken cancellationToken)
     {
         var customer = await _repository.UpdateCustomerAsync(request.UpdatedCustomer, cancellationToken);
-        await _messenger.SendMessageAsync(customer, "Update", cancellationToken);
+        await _messenger.SendMessageAsync(new CustomerUpdated{
+            PublishedAt = DateTime.UtcNow,
+            Customer = customer
+        }, cancellationToken);
         return customer;
     }
 
 
     public async Task Handle(CustomerDeleteCommand request, CancellationToken cancellationToken)
     {
-        await _repository.DeleteCustomerAsync(request.Id, cancellationToken);
-        await _messenger.SendMessageAsync(request.Id, "Delete", cancellationToken);
+        var customer = await _repository.DeleteCustomerAsync(request.Id, cancellationToken);
+
+        if(customer is not null)
+            await _messenger.SendMessageAsync(new CustomerDeleted{
+                PublishedAt = DateTime.UtcNow,
+                Customer = customer
+            }, cancellationToken);
     }
 }

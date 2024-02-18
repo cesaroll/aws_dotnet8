@@ -6,5 +6,5 @@ namespace Domain.Persistance;
 
 public interface IMessenger
 {
-    Task SendMessageAsync<T>(T message, string command, CancellationToken cancellationToken = default);
+    Task SendMessageAsync<T>(T message, CancellationToken cancellationToken = default);
 }

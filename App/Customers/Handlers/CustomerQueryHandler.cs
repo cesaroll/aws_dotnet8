@@ -14,18 +14,18 @@ public class CustomerQueryHandler :
     IRequestHandler<CustomerQuery, Customer?>,
     IRequestHandler<CustomersQuery, IEnumerable<Customer>>
 {
-    private readonly IRepository _repository;
+    private readonly IQueryRepository _queryRepository;
     private readonly ILogger<CustomerQueryHandler> _logger;
 
-    public CustomerQueryHandler(IRepository repository, ILogger<CustomerQueryHandler> logger)
+    public CustomerQueryHandler(IQueryRepository queryRepository, ILogger<CustomerQueryHandler> logger)
     {
-        _repository = repository;
+        _queryRepository = queryRepository;
         _logger = logger;
     }
 
     public async Task<Customer?> Handle(CustomerQuery request, CancellationToken cancellationToken) =>
-        await _repository.GetCustomerAsync(request.Id, cancellationToken);
+        await _queryRepository.GetCustomerAsync(request.Id, cancellationToken);
 
     public async Task<IEnumerable<Customer>> Handle(CustomersQuery request, CancellationToken cancellationToken) =>
-        await _repository.GetCustomersAsync(cancellationToken);
+        await _queryRepository.GetCustomersAsync(cancellationToken);
 }

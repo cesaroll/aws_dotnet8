@@ -14,13 +14,13 @@ namespace App.Tests.Unit;
 public class CustomerQueryHandlerTests
 {
     private CustomerQueryHandler _sut;
-    private IRepository _repository;
+    private IQueryRepository _repository;
     private ILogger<CustomerQueryHandler> _logger;
     private IFixture _fixture;
 
     public CustomerQueryHandlerTests()
     {
-        _repository = Substitute.For<IRepository>();
+        _repository = Substitute.For<IQueryRepository>();
         _logger = Substitute.For<ILogger<CustomerQueryHandler>>();
 
         _sut = new CustomerQueryHandler(_repository, _logger);

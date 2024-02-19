@@ -2,9 +2,11 @@
  * @author: Cesar Lopez
  * @copyright 2024 - All rights reserved
  */
-namespace Domain.Models.EventModels;
+using Domain.Models;
 
-public class CustomerDeleted
+namespace Domain.Messages;
+
+public class CustomerDeleted : IMessage
 {
     public DateTime PublishedAt { get; set; }
     public Customer Customer { get; set; } = null!;

@@ -2,8 +2,8 @@
  * @author: Cesar Lopez
  * @copyright 2024 - All rights reserved
  */
+using Domain.Messages;
 using Domain.Models;
-using Domain.Models.EventModels;
 using Domain.Persistance;
 using MediatR;
 using Microsoft.Extensions.Logging;

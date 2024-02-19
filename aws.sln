@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EBA2FA7C-52C4-4E44-AA7E-CAAE4B53E301}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{EBA2FA7C-52C4-4E44-AA7E-CAAE4B53E301}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{2DA4AAAC-85D8-4770-A643-52DA0792E6AF}"
 EndProject
@@ -18,6 +18,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Tests.Unit", "App.Tests.Unit\App.Tests.Unit.csproj", "{97A4279D-8D90-4233-9BCE-BBA5EAC98C20}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.SQS", "Messenger.SQS\Messenger.SQS.csproj", "{05759A28-291A-4787-B9A6-DC77F156C0F9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Consumer", "Consumer", "{DD62C40E-CC00-428B-B466-5D819E8F67BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQS.Consumer", "Consumer\SQS.Consumer\SQS.Consumer.csproj", "{E2020E89-E678-44E1-9135-88050F3044BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +53,10 @@ Global
 		{05759A28-291A-4787-B9A6-DC77F156C0F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05759A28-291A-4787-B9A6-DC77F156C0F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05759A28-291A-4787-B9A6-DC77F156C0F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2020E89-E678-44E1-9135-88050F3044BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2020E89-E678-44E1-9135-88050F3044BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2020E89-E678-44E1-9135-88050F3044BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2020E89-E678-44E1-9135-88050F3044BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,5 +68,6 @@ Global
 		{F8851514-15D4-4C9C-9786-20640D9944FF} = {EBA2FA7C-52C4-4E44-AA7E-CAAE4B53E301}
 		{97A4279D-8D90-4233-9BCE-BBA5EAC98C20} = {FC2B92FF-03BC-4719-AC97-CD4A7702F5D6}
 		{05759A28-291A-4787-B9A6-DC77F156C0F9} = {EBA2FA7C-52C4-4E44-AA7E-CAAE4B53E301}
+		{E2020E89-E678-44E1-9135-88050F3044BE} = {DD62C40E-CC00-428B-B466-5D819E8F67BC}
 	EndGlobalSection
 EndGlobal

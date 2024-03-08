@@ -4,7 +4,8 @@ using App.Customers.Queries;
 using App;
 using Serilog;
 using Api.Middleware;
-using Messenger.SQS.Config;
+// using Messenger.SQS.Config;
+using Messenger.SNS.Config;
 using Api.Dtos;
 using Api.Mappers;
 
@@ -17,8 +18,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddPostgresql(builder.Configuration.GetConnectionString("CustomersPg")!);
 
-builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("Queue"));
-builder.Services.AddSqsMessenger();
+// builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("Queue"));
+// builder.Services.AddSqsMessenger();
+builder.Services.Configure<SnsSettings>(builder.Configuration.GetSection("Sns"));
+builder.Services.AddSnsMessenger();
 
 builder.Services.AddApp();
 

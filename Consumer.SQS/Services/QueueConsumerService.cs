@@ -61,9 +61,15 @@ public class QueueConsumerService : BackgroundService
 
                     //_logger.Information("Message: {message}", message.Body);
 
-                    var messageObject = (IMessage)JsonSerializer.Deserialize(message.Body, type!)!;
+                    var messageObject = JsonSerializer.Deserialize(message.Body, type, JsonSerializerOptions) as Domain.Messages.Message;
 
-                    await _mediator.Send(messageObject, stoppingToken);
+                    if(!IsValid(messageObject))
+                    {
+                        _logger.LogWarning("Invalid message: {message}", message.Body);
+                        continue;
+                    }
+
+                    await _mediator.Send(messageObject!, stoppingToken);
 
                     await _sqsClient.DeleteMessageAsync(queueUrl, message.ReceiptHandle, stoppingToken);
                } catch(Exception ex)
@@ -74,7 +80,7 @@ public class QueueConsumerService : BackgroundService
             }
 
             _logger.LogInformation(((char)9201).ToString());
-            await Task.Delay(1000, stoppingToken);
+            await Task.Delay(1000 * 3, stoppingToken);
         }
     }
 
@@ -87,5 +93,21 @@ public class QueueConsumerService : BackgroundService
         _queueUrl = queueUrlResponse.QueueUrl;
 
         return _queueUrl;
+    }
+
+    private static JsonSerializerOptions JsonSerializerOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
+    private bool IsValid(Domain.Messages.Message? message)
+    {
+        if (message is null)
+            return false;
+
+        if (message.Customer is null)
+            return false;
+
+        return true;
     }
 }

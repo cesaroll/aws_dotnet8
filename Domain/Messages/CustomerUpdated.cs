@@ -6,8 +6,6 @@ using Domain.Models;
 
 namespace Domain.Messages;
 
-public class CustomerUpdated : IMessage
+public class CustomerUpdated : Message
 {
-    public DateTime PublishedAt { get; set; }
-    public Customer Customer { get; set; } = null!;
 }

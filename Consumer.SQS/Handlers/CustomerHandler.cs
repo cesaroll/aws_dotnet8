@@ -29,6 +29,10 @@ public class CustomerHandler :
 
     public Task Handle(CustomerUpdated request, CancellationToken cancellationToken)
     {
+        // if(request.Customer.GitHubUsername == "throw"){
+        //     throw new Exception("Something broken");
+        // }
+
         _logger.LogInformation("CustomerUpdated: {request}", JsonSerializer.Serialize(request));
         return Task.CompletedTask;
     }

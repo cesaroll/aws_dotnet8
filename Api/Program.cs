@@ -1,5 +1,6 @@
 using MediatR;
-using Persistance.PostgreSql.Config;
+// using Persistance.PostgreSql.Config;
+using Persistance.DynamoDb.Config;
 using App.Customers.Queries;
 using App;
 using Serilog;
@@ -16,7 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddPostgresql(builder.Configuration.GetConnectionString("CustomersPg")!);
+// builder.Services.AddPostgresql(builder.Configuration.GetConnectionString("CustomersPg")!);
+builder.Services.AddDynamoDb();
 
 // builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("Queue"));
 // builder.Services.AddSqsMessenger();

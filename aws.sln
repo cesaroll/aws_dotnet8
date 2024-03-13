@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consumer.SQS", "Consumer.SQ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.SNS", "Messenger.SNS\Messenger.SNS.csproj", "{539517B0-1EC9-4EA1-8CC0-3CD65C192A78}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistance.DynamoDb", "Persistance.DynamoDb\Persistance.DynamoDb.csproj", "{FDFE5A6C-8B83-4BF7-BA80-38A67B8B14CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{539517B0-1EC9-4EA1-8CC0-3CD65C192A78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{539517B0-1EC9-4EA1-8CC0-3CD65C192A78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{539517B0-1EC9-4EA1-8CC0-3CD65C192A78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDFE5A6C-8B83-4BF7-BA80-38A67B8B14CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDFE5A6C-8B83-4BF7-BA80-38A67B8B14CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDFE5A6C-8B83-4BF7-BA80-38A67B8B14CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDFE5A6C-8B83-4BF7-BA80-38A67B8B14CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,5 +82,6 @@ Global
 		{05759A28-291A-4787-B9A6-DC77F156C0F9} = {EBA2FA7C-52C4-4E44-AA7E-CAAE4B53E301}
 		{1AB25F73-A8AB-41F7-A0E0-745FDC862B84} = {D5B0AFC9-E856-4C80-BC60-B52B105A8B4F}
 		{539517B0-1EC9-4EA1-8CC0-3CD65C192A78} = {EBA2FA7C-52C4-4E44-AA7E-CAAE4B53E301}
+		{FDFE5A6C-8B83-4BF7-BA80-38A67B8B14CA} = {EBA2FA7C-52C4-4E44-AA7E-CAAE4B53E301}
 	EndGlobalSection
 EndGlobal

@@ -79,7 +79,7 @@ public class QueueConsumerService : BackgroundService
                }
             }
 
-            _logger.LogInformation(((char)9201).ToString());
+            _logger.LogInformation($"{_queueSettings.Value.Name} - {((char)9201).ToString()}");
             await Task.Delay(1000 * 3, stoppingToken);
         }
     }

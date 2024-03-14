@@ -5,7 +5,7 @@
 using Domain.Models;
 using MediatR;
 
-namespace App;
+namespace App.Customers.Commands;
 
 public record class CustomerCreateCommand : IRequest<Customer>
 {

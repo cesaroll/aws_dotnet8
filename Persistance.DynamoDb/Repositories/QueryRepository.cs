@@ -49,8 +49,24 @@ public class QueryRepository : IQueryRepository
         return customerItem?.ToCustomer();
     }
 
-    public Task<IEnumerable<Customer>> GetCustomersAsync(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Customer>> GetCustomersAsync(CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var scanRequest = new ScanRequest {
+            TableName = _tableName
+        };
+
+        var response = await _dynamoDb.ScanAsync(scanRequest, cancellationToken); // This is bad
+
+        if (response.HttpStatusCode != HttpStatusCode.OK)
+            throw new Exception("Error getting customers from DynamoDB");
+
+        var customerItems = response.Items.Select(item => {
+            var itemAsDocument = Document.FromAttributeMap(item);
+            return JsonSerializer.Deserialize<CustomerItem>(itemAsDocument.ToJson())?.ToCustomer();
+        })
+        .Where(customer => customer != null)
+        .Select(customer => customer!);
+
+        return customerItems;
     }
 }

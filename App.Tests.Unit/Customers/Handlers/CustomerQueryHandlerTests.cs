@@ -2,6 +2,8 @@
  * @author: Cesar Lopez
  * @copyright 2024 - All rights reserved
  */
+using App.Customers.Handlers;
+using App.Customers.Queries;
 using AutoFixture;
 using Domain.Models;
 using Domain.Persistance;

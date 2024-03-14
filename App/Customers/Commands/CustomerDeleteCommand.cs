@@ -4,7 +4,7 @@
  */
 using MediatR;
 
-namespace App;
+namespace App.Customers.Commands;
 
 public record class CustomerDeleteCommand : IRequest
 {

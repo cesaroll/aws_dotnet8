@@ -2,13 +2,14 @@
  * @author: Cesar Lopez
  * @copyright 2024 - All rights reserved
  */
+using App.Customers.Commands;
 using Domain.Messages;
 using Domain.Models;
 using Domain.Persistance;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace App;
+namespace App.Customers.Handlers;
 
 public class CustomerCommandHandler :
     IRequestHandler<CustomerCreateCommand, Customer>,

@@ -4,9 +4,8 @@
  */
 using App.Customers.Queries;
 using Microsoft.Extensions.DependencyInjection;
-using Persistance.PostgreSql.Config;
 
-namespace App;
+namespace App.Config;
 
 public static class DIExtensions
 {

@@ -8,7 +8,7 @@ using Domain.Persistance;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace App;
+namespace App.Customers.Handlers;
 
 public class CustomerQueryHandler :
     IRequestHandler<CustomerQuery, Customer?>,

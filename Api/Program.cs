@@ -2,13 +2,14 @@ using MediatR;
 // using Persistance.PostgreSql.Config;
 using Persistance.DynamoDb.Config;
 using App.Customers.Queries;
-using App;
+using App.Config;
 using Serilog;
 using Api.Middleware;
 // using Messenger.SQS.Config;
 using Messenger.SNS.Config;
 using Api.Dtos;
 using Api.Mappers;
+using App.Customers.Commands;
 
 var builder = WebApplication.CreateBuilder(args);
 

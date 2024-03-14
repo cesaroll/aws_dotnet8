@@ -27,7 +27,15 @@ public class Repository : IRepository
         var customerItem = customer.ToCustomerItem();
         customerItem.UpdatedAt = DateTime.UtcNow;
 
-        var response = await PutCustomerAsync(customerItem, cancellationToken);
+        var customerAsAttributesMap = customerItem.ToAttributeMap();
+
+        var addItemRequest = new PutItemRequest {
+            TableName = _tableName,
+            Item = customerAsAttributesMap
+        };
+
+        var response = await _dynamoDb.PutItemAsync(addItemRequest, cancellationToken);
+
 
         if(response.HttpStatusCode != HttpStatusCode.OK)
             throw new Exception("Error adding customer to DynamoDB");
@@ -58,23 +66,29 @@ public class Repository : IRepository
         var customerItem = customer.ToCustomerItem();
         customerItem.UpdatedAt = DateTime.UtcNow;
 
-        var response = await PutCustomerAsync(customerItem, cancellationToken);
-
-        if(response.HttpStatusCode != HttpStatusCode.OK)
-            throw new Exception("Error updating customer in DynamoDB");
-
-        return customer;
-    }
-
-    private async Task<PutItemResponse> PutCustomerAsync(CustomerItem customerItem, CancellationToken cancellationToken = default)
-    {
         var customerAsAttributesMap = customerItem.ToAttributeMap();
 
-        var putItemRequest = new PutItemRequest {
+        var updateItemRequest = new PutItemRequest {
             TableName = _tableName,
-            Item = customerAsAttributesMap
+            Item = customerAsAttributesMap,
+            ConditionExpression = "Version < :newVersion",
+            ExpressionAttributeValues = new Dictionary<string, AttributeValue> {
+                { ":newVersion", new AttributeValue { N = customer.Version.ToString() } }
+            }
         };
 
-        return await _dynamoDb.PutItemAsync(putItemRequest, cancellationToken);
+        try
+        {
+            var response = await _dynamoDb.PutItemAsync(updateItemRequest, cancellationToken);
+
+            if(response.HttpStatusCode != HttpStatusCode.OK)
+                throw new Exception("Error updating customer in DynamoDB");
+
+            return customer;
+        }
+        catch (ConditionalCheckFailedException ex)
+        {
+            throw new VersionException("Version error, race condition", ex);
+        }
     }
 }

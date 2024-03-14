@@ -23,6 +23,7 @@ public partial class CreateCustomerDtoMapper
     {
         var customer = CreateCustomerDtoToCustomer(createCustomerDto);
         customer.Id = Guid.NewGuid();
+        customer.Version = 1;
         return customer;
     }
 

@@ -31,7 +31,8 @@ public class Repository : IRepository
 
         var addItemRequest = new PutItemRequest {
             TableName = _tableName,
-            Item = customerAsAttributesMap
+            Item = customerAsAttributesMap,
+            ConditionExpression = "attribute_not_exists(pk)"
         };
 
         var response = await _dynamoDb.PutItemAsync(addItemRequest, cancellationToken);

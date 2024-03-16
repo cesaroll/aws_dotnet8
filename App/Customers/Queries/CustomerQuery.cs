@@ -9,9 +9,13 @@ namespace App.Customers.Queries;
 
 public record CustomerQuery : IRequest<Customer>
 {
-    public Guid Id { get; set; }
-    public CustomerQuery(Guid id)
+    public Guid? Id { get; set; }
+    public string? Email {get; set;}
+    public CustomerQuery(string idOrEmail)
     {
-        Id = id;
+        if(Guid.TryParse(idOrEmail, out var id))
+            Id = id;
+        else
+            Email = idOrEmail;
     }
 }

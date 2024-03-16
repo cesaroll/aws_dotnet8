@@ -24,6 +24,11 @@ public class QueryRepository : IQueryRepository
         return customer?.ToCustomer();
     }
 
+    public Task<Customer?> GetCustomerAsync(string email, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<IEnumerable<Customer>> GetCustomersAsync(CancellationToken cancellationToken = default)
     {
         var customerEntities = await _dbContext.Customers.ToListAsync(cancellationToken);

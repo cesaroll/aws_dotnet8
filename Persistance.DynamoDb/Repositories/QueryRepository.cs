@@ -49,6 +49,31 @@ public class QueryRepository : IQueryRepository
         return customerItem?.ToCustomer();
     }
 
+    public async Task<Customer?> GetCustomerAsync(string email, CancellationToken cancellationToken = default)
+    {
+        var getQueryRequest = new QueryRequest {
+            TableName = _tableName,
+            IndexName = "Email-id-index",
+            KeyConditionExpression = "Email = :v_email",
+            ExpressionAttributeValues = new Dictionary<string, AttributeValue> {
+                { ":v_email", new AttributeValue { S = email } }
+            }
+        };
+
+        var response = await _dynamoDb.QueryAsync(getQueryRequest, cancellationToken);
+
+        if (response.HttpStatusCode != HttpStatusCode.OK)
+            throw new Exception("Error getting customer from DynamoDB");
+
+        if (response.Items.Count == 0)
+            return null;
+
+        var itemAsDocument = Document.FromAttributeMap(response.Items.FirstOrDefault());
+        var customerItem = JsonSerializer.Deserialize<CustomerItem>(itemAsDocument.ToJson());
+
+        return customerItem?.ToCustomer();
+    }
+
     public async Task<IEnumerable<Customer>> GetCustomersAsync(CancellationToken cancellationToken = default)
     {
         var scanRequest = new ScanRequest {

@@ -52,9 +52,14 @@ app.MapGet("/api/customer", async (IMediator mediator, CancellationToken ct) =>
 .WithName("GetCustomers")
 .WithOpenApi();
 
-app.MapGet("/api/customer/{id}", async (Guid id, IMediator mediator, CancellationToken ct) =>
-    await mediator.Send(new CustomerQuery(id), ct))
-.WithName("GetCustomerById")
+// app.MapGet("/api/customer/{id}", async (Guid id, IMediator mediator, CancellationToken ct) =>
+//     await mediator.Send(new CustomerQuery(id), ct))
+// .WithName("GetCustomerById")
+// .WithOpenApi();
+
+app.MapGet("/api/customer/{isOrEmail}", async (string idOrEmail, IMediator mediator, CancellationToken ct) =>
+    await mediator.Send(new CustomerQuery(idOrEmail), ct))
+.WithName("GetCustomer")
 .WithOpenApi();
 
 app.MapPost("/api/customer", async (IMediator mediator, CreateCustomerDto createCustomerDto, CancellationToken ct) =>

@@ -38,7 +38,7 @@ public class CustomerQueryHandlerTests
             .With(c => c.Id, Guid.NewGuid())
             .Create();
 
-        var query = new CustomerQuery(customer.Id);
+        var query = new CustomerQuery(customer.Id.ToString());
 
         _repository.GetCustomerAsync(customer.Id, Arg.Any<CancellationToken>())
             .Returns(customer);
